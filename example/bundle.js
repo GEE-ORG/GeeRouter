@@ -134,14 +134,18 @@ class GeeRouter {
 			if (node.tagName !== 'A') {
 				return;
 			}
-			node.setAttribute('href', '#!' + node.pathname);
-			if (this.path2Ele[node.pathname]) {
-				this.path2Ele[node.pathname] = [this.path2Ele[node.pathname]];
-				this.path2Ele[node.pathname].push(node);
+			const path = node.pathname;
+			node.setAttribute('href', '#!' + path);
+
+			console.log(this.path2Ele);
+			if (this.path2Ele[path]) {
+				this.path2Ele[path] = [this.path2Ele[path]];
+				this.path2Ele[path].push(node);
 			} else {
-				this.path2Ele[node.pathname] = node;
+				this.path2Ele[path] = node;
 			}
 		});
+		console.log(this.path2Ele);
 	}
 
 	firstPage() {
@@ -171,8 +175,23 @@ class GeeRouter {
 
 		this.hashChange({ from: this.from, to: this.to });
 
-		this.curActive && this.path2Ele[this.curActive].classList.remove('active');
-		this.path2Ele[this.to.path].classList.add('active');
+		if (this.curActive) {
+			if (Array.isArray(this.path2Ele[this.curActive])) {
+				this.path2Ele[this.curActive].forEach(el => {
+					el.classList.remove('active');
+				});
+			} else {
+				this.path2Ele[this.curActive].classList.remove('active');
+			}
+		}
+		if (Array.isArray(this.path2Ele[this.to.path])) {
+			this.path2Ele[this.to.path].forEach(el => {
+				el.classList.add('active');
+			});
+		} else {
+			this.path2Ele[this.to.path].classList.add('active');
+		}
+
 		this.curActive = this.to.path;
 	}
 
