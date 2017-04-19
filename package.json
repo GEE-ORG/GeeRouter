@@ -1,0 +1,8 @@
+{
+	"name": "geeRouter",
+	"version": "1.0.0",
+	"description": "this is a Front-End router that is easy to use.",
+	"main": "index.js",
+	"license": "MIT",
+	"author": "Geeku <ggongpei@gmail.com> (https://geeku.net/)"
+}
