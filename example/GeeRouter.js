@@ -1,1 +1,1 @@
-lib/GeeRouter.js
+./lib/GeeRouter.js
