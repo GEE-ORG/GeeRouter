@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "webpack --optimize-minimize"
+  },
   "dependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
