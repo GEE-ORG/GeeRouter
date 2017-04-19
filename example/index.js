@@ -1,4 +1,5 @@
 import GeeRouter from './GeeRouter';
+// import GeeRouter from 'gee-router';
 
 const container = document.querySelector('.container');
 const handlers = {
@@ -29,4 +30,3 @@ const geerouter = new GeeRouter([
 ]);
 geerouter.parse(document.querySelectorAll('a'));
 geerouter.start();
-console.log(geerouter);
