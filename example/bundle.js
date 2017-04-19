@@ -1,1 +1,314 @@
-!function(t){function e(n){if(o[n])return o[n].exports;var h=o[n]={i:n,l:!1,exports:{}};return t[n].call(h.exports,h,h.exports,e),h.l=!0,h.exports}var o={};e.m=t,e.c=o,e.i=function(t){return t},e.d=function(t,o,n){e.o(t,o)||Object.defineProperty(t,o,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var o=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(o,"a",o),o},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=1)}([function(t,e,o){"use strict";function n(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0});var h="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},r=function(){function t(t,e){for(var o=0;o<e.length;o++){var n=e[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(e,o,n){return o&&t(e.prototype,o),n&&t(e,n),e}}(),a=function(){function t(){var e=this,o=arguments.length>0&&void 0!==arguments[0]?arguments[0]:[];n(this,t),this._hash="",this.from={path:"",fullPath:location.href},this.to={path:"",fullPath:location.href},this.history=[],this.historyAnchor=-1,this.beforeEachFuncs=[],this.afterEachFuncs=[],this.origin=location.protocol+"//"+location.host+location.pathname,this.routes=o,this.defaultPath="/",this.page404=function(){},this.routes.forEach(function(t){t.default&&(e.defaultPath=t.path),"*"===t.path&&(e.page404=t.handler)})}return r(t,[{key:"start",value:function(){var t=this;window.addEventListener("hashchange",function(){t.hashName=location.hash.replace("#!",""),console.log(t.hashName)}),this.firstPage()}},{key:"parse",value:function(t){var e=this;"string"==typeof t&&(t=document.querySelectorAll(t)),(t instanceof NodeList||t instanceof HTMLCollection||t instanceof Node)&&Array.from(t,function(t){"A"===t.tagName&&(console.dir(t),e.routes.forEach(function(e){console.log(e.path,t.href),e.path===t.pathname&&t.setAttribute("href","#!"+e.path)}))})}},{key:"firstPage",value:function(){""!==location.hash?this.hashName=location.hash.replace("#!",""):location.hash="!"+this.defaultPath}},{key:"hashChange",value:function(t){var e=this;if(this.routes.length){var o=function(){for(var o=t.from,n=t.to,r=e.beforeEachFuncs.length-1,a=e.routes.length-1,i=0;i<=a;i++){var s=function(t){var h=e.routes[t];if(e.hashName===h.path){if(e.beforeEachFuncs.length){var a=0,i=function t(){a<r?e.beforeEachFuncs[++a](o,n,t):h.handler({from:o,to:n})};e.beforeEachFuncs[0](o,n,i)}else h.handler({from:o,to:n});if(e.afterEachFuncs.length)for(var s=0;s<e.afterEachFuncs.length;s++)e.afterEachFuncs[s]();return{v:{v:void 0}}}}(i);if("object"===(void 0===s?"undefined":h(s)))return s.v}if(e.beforeEachFuncs.length){var c=0,u=function t(){c<r?e.beforeEachFuncs[++c](o,n,t,"404"):e.page404({from:o,to:n})};e.beforeEachFuncs[0](o,n,u,"404")}else e.page404({from:o,to:n})}();if("object"===(void 0===o?"undefined":h(o)))return o.v}}},{key:"beforeEach",value:function(t){return this.beforeEachFuncs.push(t),t(this.from,this.to,function(){}),this}},{key:"afterEach",value:function(t){return this.afterEachFuncs.push(t),t(this.from,this.to),this}},{key:"back",value:function(){this.history.length<2||(this.hashName=this.history[this.historyAnchor-1])}},{key:"go",value:function(t){t>0&&this.history.length-1-this.historyAnchor>=t&&(this.hashName=this.history[this.historyAnchor-t]),t<0&&this.historyAnchor>=Math.abs(t)&&(this.hashName=this.history[this.historyAnchor+t])}},{key:"hashName",get:function(){return this._hash},set:function(t){this.from.path=this.hashName,this.from.fullPath=this.origin+"#!"+this.hashName,this._hash=t,this.to.path=this.hashName,this.to.fullPath=this.origin+"#!"+this.hashName,this.history.push(this.hashName),this.historyAnchor+=1,this.hashChange({from:this.from,to:this.to})}}]),t}();e.default=a},function(t,e,o){"use strict";var n=o(0),h=function(t){return t&&t.__esModule?t:{default:t}}(n),r=document.querySelector(".container"),a={home:function(){r.innerText="Home"},test:function(){r.innerText="Test"}},i=new h.default([{path:"/",handler:a.home},{path:"/test",handler:a.test,default:!0}]);i.parse(document.querySelectorAll("a")),i.start(),console.log(i)}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/**
+ * Created by geeku on 19/04/2017.
+ */
+
+// TODO dynamic parame
+class GeeRouter {
+	constructor(routes = []) {
+		this._hash = '';
+		this.from = {
+			path: '',
+			fullPath: location.href
+		};
+		this.to = {
+			path: '',
+			fullPath: location.href
+		};
+		this.history = [];
+		this.historyAnchor = -1;
+
+		this.beforeEachFuncs = [];
+		this.afterEachFuncs = [];
+
+		this.origin = location.protocol + '//' + location.host + location.pathname;
+
+		this.routes = routes;
+
+		this.defaultPath = '/';
+		this.page404 = () => {};
+
+		this.path2Ele = {};
+		this.curActive = null;
+
+		this.routes.forEach(route => {
+			if (route.default) {
+				this.defaultPath = route.path;
+			}
+			if (route.path === '*') {
+				this.page404 = route.handler;
+			}
+		});
+	}
+
+	start() {
+		window.addEventListener("hashchange", () => {
+			this.hashName = location.hash.replace('#!', '');
+			console.log(this.hashName);
+		});
+		this.firstPage();
+	}
+
+	parse(nodelist) {
+		if (typeof nodelist === 'string') {
+			nodelist = document.querySelectorAll(nodelist);
+		}
+		if (!(nodelist instanceof NodeList || nodelist instanceof HTMLCollection || nodelist instanceof Node)) {
+			return;
+		}
+
+		Array.from(nodelist, node => {
+			if (node.tagName !== 'A') {
+				return;
+			}
+			node.setAttribute('href', '#!' + node.pathname);
+			if (this.path2Ele[node.pathname]) {
+				this.path2Ele[node.pathname] = [this.path2Ele[node.pathname]];
+				this.path2Ele[node.pathname].push(node);
+			} else {
+				this.path2Ele[node.pathname] = node;
+			}
+		});
+	}
+
+	firstPage() {
+		if (location.hash !== '') {
+			this.hashName = location.hash.replace('#!', '');
+		} else {
+			location.hash = '!' + this.defaultPath;
+		}
+	}
+
+	get hashName() {
+		return this._hash;
+	}
+
+	set hashName(newVal) {
+
+		this.from.path = this.hashName;
+		this.from.fullPath = `${this.origin}#!${this.hashName}`;
+
+		this._hash = newVal;
+
+		this.to.path = this.hashName;
+		this.to.fullPath = `${this.origin}#!${this.hashName}`;
+
+		this.history.push(this.hashName);
+		this.historyAnchor += 1;
+
+		this.hashChange({ from: this.from, to: this.to });
+
+		this.curActive && this.path2Ele[this.curActive].classList.remove('active');
+		this.path2Ele[this.to.path].classList.add('active');
+		this.curActive = this.to.path;
+	}
+
+	hashChange(parame) {
+
+		if (this.routes.length) {
+
+			let from = parame.from;
+			let to = parame.to;
+			const lastIndex = this.beforeEachFuncs.length - 1;
+			const routesLastIndex = this.routes.length - 1;
+
+			for (let i = 0; i <= routesLastIndex; i++) {
+				const route = this.routes[i];
+
+				if (this.hashName === route.path) {
+					// Excute beforeEach functions
+					if (this.beforeEachFuncs.length) {
+						// beforeEach functions chain
+						let index = 0;
+						const next = () => {
+							// console.log(index);
+							if (index < lastIndex) {
+								this.beforeEachFuncs[++index](from, to, next);
+							} else {
+								route.handler({ from, to });
+							}
+						};
+						this.beforeEachFuncs[0](from, to, next);
+					} else {
+						route.handler({ from, to });
+					}
+
+					if (this.afterEachFuncs.length) {
+						for (let j = 0; j < this.afterEachFuncs.length; j++) {
+							this.afterEachFuncs[j]();
+						}
+					}
+
+					return;
+				}
+			}
+
+			// 404 page
+			if (this.beforeEachFuncs.length) {
+				// beforeEach functions chain
+				let index = 0;
+				const next = () => {
+					// console.log(index);
+					if (index < lastIndex) {
+						this.beforeEachFuncs[++index](from, to, next, '404');
+					} else {
+						this.page404({ from, to });
+					}
+				};
+				this.beforeEachFuncs[0](from, to, next, '404');
+			} else {
+				this.page404({ from, to });
+			}
+		}
+	}
+
+	beforeEach(func) {
+		this.beforeEachFuncs.push(func);
+		func(this.from, this.to, () => {});
+
+		return this;
+	}
+
+	afterEach(func) {
+		this.afterEachFuncs.push(func);
+		func(this.from, this.to);
+
+		return this;
+	}
+
+	back() {
+		if (this.history.length < 2) {
+			return;
+		}
+		this.hashName = this.history[this.historyAnchor - 1];
+	}
+
+	go(cout) {
+		if (cout > 0 && this.history.length - 1 - this.historyAnchor >= cout) {
+			this.hashName = this.history[this.historyAnchor - cout];
+		}
+
+		if (cout < 0 && this.historyAnchor >= Math.abs(cout)) {
+			this.hashName = this.history[this.historyAnchor + cout];
+		}
+	}
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (GeeRouter);
+// module.exports = GeeRouter;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _GeeRouter = __webpack_require__(0);
+
+var _GeeRouter2 = _interopRequireDefault(_GeeRouter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var container = document.querySelector('.container');
+var handlers = {
+	home: function home() {
+		container.innerText = 'Home';
+	},
+	post: function post() {
+		container.innerText = 'Post';
+	},
+	notFound: function notFound() {
+		container.innerText = '404';
+	}
+};
+var geerouter = new _GeeRouter2.default([{
+	path: '/',
+	handler: handlers.home
+}, {
+	path: '/post',
+	handler: handlers.post,
+	default: true
+}, {
+	path: '*',
+	handler: handlers.notFound
+}]);
+geerouter.parse(document.querySelectorAll('a'));
+geerouter.start();
+console.log(geerouter);
+
+/***/ })
+/******/ ]);

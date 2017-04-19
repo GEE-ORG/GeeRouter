@@ -5,9 +5,12 @@ const handlers = {
 	home: () => {
 		container.innerText = 'Home'
 	},
-	test: () => {
-		container.innerText = 'Test'
-	}
+	post: () => {
+		container.innerText = 'Post'
+	},
+	notFound: () => {
+		container.innerText = '404'
+	},
 }
 const geerouter = new GeeRouter([
 	{
@@ -15,9 +18,13 @@ const geerouter = new GeeRouter([
 		handler: handlers.home
 	},
 	{
-		path: '/test',
-		handler: handlers.test,
+		path: '/post',
+		handler: handlers.post,
 		default: true
+	},
+	{
+		path: '*',
+		handler: handlers.notFound
 	}
 ]);
 geerouter.parse(document.querySelectorAll('a'));
