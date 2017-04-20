@@ -12,11 +12,19 @@ https://gongpeione.github.io/GeeRouter/example
 yarn add gee-router --save
 ```
 
-if you prefer npm
+If you prefer npm
 
 ```bash
 npm install gee-router --save
 ```
+
+Or you can just use `script` to import GeeRouter like this:
+
+```javascript
+<script src="path/to/GeeRouter.js"></script>
+```
+
+Here is a codepen demo: https://codepen.io/gongpeione/pen/BRjMwV
 
 ### Import and use GMD
 ```html
