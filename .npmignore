@@ -2,3 +2,5 @@
 example/
 .idea/
 deploy.sh
+rollup/
+node_modules/

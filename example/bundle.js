@@ -76,7 +76,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * Created by geeku on 19/04/2017.
  */
 
-// TODO dynamic parame
+// TODO dynamic parame, History mod.
 class GeeRouter {
 	constructor(routes = []) {
 		this._hash = '';
