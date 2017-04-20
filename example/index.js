@@ -1,6 +1,7 @@
 import GeeRouter from './GeeRouter';
 // import GeeRouter from 'gee-router';
 
+const historyMod = localStorage.getItem('history') === 'true' || false;
 const container = document.querySelector('.container');
 const handlers = {
 	home: () => {
@@ -27,6 +28,6 @@ const geerouter = new GeeRouter([
 		path: '*',
 		handler: handlers.notFound
 	}
-], true);
+], historyMod);
 geerouter.parse(document.querySelectorAll('a'));
 geerouter.start();

@@ -326,6 +326,7 @@ var _GeeRouter2 = _interopRequireDefault(_GeeRouter);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var historyMod = localStorage.getItem('history') === 'true' || false;
 var container = document.querySelector('.container');
 var handlers = {
 	home: function home() {
@@ -348,7 +349,7 @@ var geerouter = new _GeeRouter2.default([{
 }, {
 	path: '*',
 	handler: handlers.notFound
-}], true);
+}], historyMod);
 geerouter.parse(document.querySelectorAll('a'));
 geerouter.start();
 

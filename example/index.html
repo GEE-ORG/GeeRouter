@@ -51,6 +51,48 @@
             font-size: 50px;
             color: rgba(98, 113, 167, 0.48)
         }
+        .mod {
+            background: #1584ff;
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .mod input {
+            display: none;
+        }
+        input#history + span {
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            background: #fff;
+            display: inline-block;
+            vertical-align: bottom;
+            position: relative;
+            transition: all .2s ease-in-out;
+        }
+        input#history:checked + span {
+            border: 3px solid #fff;
+            background: #1584ff;
+        }
+        /*input#history + span::after {*/
+            /*content: '';*/
+            /*position: absolute;*/
+            /*width: 10px;*/
+            /*height: 10px;*/
+            /*background: #1584ff;*/
+            /*border-radius: 50%;*/
+            /*left: 50%;*/
+            /*top: 50%;*/
+            /*transform: translate(-50%, -50%) scale(0);*/
+            /*transition: transform .2s ease-in-out;*/
+        /*}*/
+        /*input#history:checked + span::after {*/
+            /*transform: translate(-50%, -50%) scale(1);*/
+        /*}*/
+
     </style>
 </head>
 <body>
@@ -64,7 +106,29 @@
     </ul>
 </nav>
 <div class="container"></div>
+<div class="mod">
+    <label for="history">History Mod</label>
+    <input type="checkbox" id="history">
+    <span></span>
+</div>
 
+<script>
+    var originalUrl = location.href;
+</script>
 <script src="bundle.js"></script>
+<script>
+    const history = document.querySelector('#history');
+    history.checked = localStorage.getItem('history') === 'true' || false;
+    history.addEventListener('change', function (e) {
+        if (this.checked) {
+        	localStorage.setItem('history', true);
+        } else {
+	        localStorage.setItem('history', false);
+        }
+        setTimeout(() => {
+	        location.href = originalUrl;
+        }, 400);
+    });
+</script>
 </body>
 </html>
