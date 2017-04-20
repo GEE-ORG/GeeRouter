@@ -27,6 +27,6 @@ const geerouter = new GeeRouter([
 		path: '*',
 		handler: handlers.notFound
 	}
-]);
+], true);
 geerouter.parse(document.querySelectorAll('a'));
 geerouter.start();

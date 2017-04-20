@@ -4,7 +4,7 @@
 
 // TODO dynamic parame, History mod.
 class GeeRouter {
-	constructor (routes = []) {
+	constructor (routes = [], historyMod = false) {
 		this._hash = '';
 		this.from = {
 			path: '',
@@ -14,6 +14,8 @@ class GeeRouter {
 			path: '',
 			fullPath: location.href
 		};
+
+		this.historyMod = historyMod;
 		this.history = [];
 		this.historyAnchor = -1;
 
@@ -41,10 +43,18 @@ class GeeRouter {
 	}
 
 	start () {
-		window.addEventListener("hashchange", () => {
-			this.hashName = location.hash.replace('#!', '');
-			console.log(this.hashName);
-		});
+		if (this.historyMod) {
+			window.addEventListener('popstate', e => {
+				const path = e.state && e.state.path;
+				if  (path) {
+					this.pathName = path;
+				}
+			});
+		} else {
+			window.addEventListener("hashchange", () => {
+				this.pathName = location.hash.replace('#!', '');
+			});
+		}
 		this.firstPage();
 	}
 
@@ -65,9 +75,15 @@ class GeeRouter {
 				return;
 			}
 			const path = node.pathname;
-			node.setAttribute('href', '#!' + path);
+			if (this.historyMod) {
+				node.addEventListener('click', e => {
+					e.preventDefault();
+					this._pushState({ path: path }, null, path);
+				});
+			} else {
+				node.setAttribute('href', '#!' + path);
+			}
 
-			console.log(this.path2Ele);
 			if (this.path2Ele[path]) {
 				this.path2Ele[path] = [this.path2Ele[path]];
 				this.path2Ele[path].push(node);
@@ -75,32 +91,40 @@ class GeeRouter {
 				this.path2Ele[path] = node;
 			}
 		});
-		console.log(this.path2Ele);
 	}
 
 	firstPage () {
+		if (this.historyMod) {
+			this.defaultPath && this._pushState({ path: this.defaultPath}, null, this.defaultPath);
+			return;
+		}
 		if (location.hash !== '') {
-			this.hashName = location.hash.replace('#!', '');
+			this.pathName = location.hash.replace('#!', '');
 		} else {
 			location.hash = '!' + this.defaultPath;
 		}
 	}
 
-	get hashName () {
+	_pushState (state = {}, title = null, url = '') {
+		window.history.pushState(state, title, url);
+		this.pathName = url;
+	}
+
+	get pathName () {
 		return this._hash;
 	}
 
-	set hashName(newVal) {
+	set pathName(newVal) {
 
-		this.from.path = this.hashName;
-		this.from.fullPath = `${this.origin}#!${this.hashName}`;
+		this.from.path = this.pathName;
+		this.from.fullPath = `${this.origin}#!${this.pathName}`;
 
 		this._hash = newVal;
 
-		this.to.path = this.hashName;
-		this.to.fullPath = `${this.origin}#!${this.hashName}`;
+		this.to.path = this.pathName;
+		this.to.fullPath = `${this.origin}#!${this.pathName}`;
 
-		this.history.push(this.hashName);
+		this.history.push(this.pathName);
 		this.historyAnchor += 1;
 
 		this.hashChange ({ from: this.from, to: this.to });
@@ -137,7 +161,7 @@ class GeeRouter {
 			for (let i = 0; i <= routesLastIndex; i++) {
 				const route = this.routes[i];
 
-				if (this.hashName === route.path) {
+				if (this.pathName === route.path) {
 					// Excute beforeEach functions
 					if (this.beforeEachFuncs.length) {
 						// beforeEach functions chain
@@ -204,16 +228,16 @@ class GeeRouter {
 		if (this.history.length < 2) {
 			return;
 		}
-		this.hashName = this.history[this.historyAnchor - 1];
+		this.pathName = this.history[this.historyAnchor - 1];
 	}
 
 	go (cout) {
 		if (cout > 0 && (this.history.length - 1 - this.historyAnchor) >= cout) {
-			this.hashName = this.history[this.historyAnchor - cout];
+			this.pathName = this.history[this.historyAnchor - cout];
 		}
 
 		if (cout < 0 && this.historyAnchor >= Math.abs(cout)) {
-			this.hashName = this.history[this.historyAnchor + cout];
+			this.pathName = this.history[this.historyAnchor + cout];
 		}
 	}
 }
