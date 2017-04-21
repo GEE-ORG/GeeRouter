@@ -13,6 +13,9 @@ const handlers = {
 	notFound: () => {
 		container.innerText = '404'
 	},
+	article: ($route) => {
+		container.innerHTML = `<pre style="font-size: 14px">${JSON.stringify($route, null, '\t')}</pre>`;
+	}
 }
 const geerouter = new GeeRouter([
 	{
@@ -23,6 +26,14 @@ const geerouter = new GeeRouter([
 		path: '/post',
 		handler: handlers.post,
 		default: true
+	},
+	{
+		path: '/article/:id/:title',
+		handler: handlers.article,
+	},
+	{
+		path: '/gallery/:id',
+		handler: handlers.article,
 	},
 	{
 		path: '*',

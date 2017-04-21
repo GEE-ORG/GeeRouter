@@ -89,7 +89,7 @@ class GeeRouter {
 			fullPath: location.href
 		};
 
-		this.historyMod = historyMod;
+		this.historyMod = 'pushState' in window.history ? historyMod : false;
 		this.history = [];
 		this.historyAnchor = -1;
 
@@ -104,8 +104,10 @@ class GeeRouter {
 		this.page404 = () => {};
 
 		this.path2Ele = {};
+		// Current active route
 		this.curActive = null;
 
+		// find default route and wildcard route
 		this.routes.forEach(route => {
 			if (route.default) {
 				this.defaultPath = route.path;
@@ -148,7 +150,7 @@ class GeeRouter {
 			if (this.historyMod) {
 				node.addEventListener('click', e => {
 					e.preventDefault();
-					this._pushState({ path: path }, null, path);
+					this._pushState({ path: path }, path, path);
 				});
 			} else {
 				node.setAttribute('href', '#!' + path);
@@ -197,7 +199,7 @@ class GeeRouter {
 		this.history.push(this.pathName);
 		this.historyAnchor += 1;
 
-		this.hashChange({ from: this.from, to: this.to });
+		this.pathChange({ from: this.from, to: this.to });
 
 		if (this.curActive) {
 			if (Array.isArray(this.path2Ele[this.curActive])) {
@@ -219,62 +221,88 @@ class GeeRouter {
 		this.curActive = this.to.path;
 	}
 
-	hashChange(parame) {
+	pathChange(parame) {
 
-		if (this.routes.length) {
+		if (!this.routes.length) {
+			return;
+		}
+		let from = parame.from;
+		let to = parame.to;
+		const lastIndex = this.beforeEachFuncs.length - 1;
+		const routesLastIndex = this.routes.length - 1;
+		const routeState = {
+			from,
+			to,
+			params: {},
+			query: {}
+		};
 
-			let from = parame.from;
-			let to = parame.to;
-			const lastIndex = this.beforeEachFuncs.length - 1;
-			const routesLastIndex = this.routes.length - 1;
+		for (let i = 0; i <= routesLastIndex; i++) {
+			const route = this.routes[i];
+			let isMatchRoute = false;
 
-			for (let i = 0; i <= routesLastIndex; i++) {
-				const route = this.routes[i];
-
-				if (this.pathName === route.path) {
-					// Excute beforeEach functions
-					if (this.beforeEachFuncs.length) {
-						// beforeEach functions chain
-						let index = 0;
-						const next = () => {
-							// console.log(index);
-							if (index < lastIndex) {
-								this.beforeEachFuncs[++index](from, to, next);
-							} else {
-								route.handler({ from, to });
-							}
-						};
-						this.beforeEachFuncs[0](from, to, next);
-					} else {
-						route.handler({ from, to });
+			if (this.pathName === route.path) {
+				isMatchRoute = true;
+			} else if (/:\w+/.test(route.path)) {
+				const paramsMatches = route.path.match(/:(\w+)/g);
+				const pathRegex = route.path.replace(/(:\w+)/g, '([^\/]+)');
+				const pathMatches = new RegExp(pathRegex).exec(this.pathName);
+				// console.log(paramsMatches, pathRegex, pathMatches);
+				if (pathMatches && pathMatches.length) {
+					isMatchRoute = true;
+					for (let i = 0; i < paramsMatches.length; i++) {
+						const param = paramsMatches[i].replace(':', '');
+						routeState.params[param] = pathMatches[i + 1];
 					}
-
-					if (this.afterEachFuncs.length) {
-						for (let j = 0; j < this.afterEachFuncs.length; j++) {
-							this.afterEachFuncs[j]();
-						}
-					}
-
-					return;
+					console.log(routeState);
 				}
 			}
 
-			// 404 page
+			if (!isMatchRoute) {
+				continue;
+			}
+
+			// Excute beforeEach functions
 			if (this.beforeEachFuncs.length) {
 				// beforeEach functions chain
 				let index = 0;
 				const next = () => {
 					// console.log(index);
 					if (index < lastIndex) {
-						this.beforeEachFuncs[++index](from, to, next, '404');
+						this.beforeEachFuncs[++index](from, to, next);
 					} else {
-						this.page404({ from, to });
+						route.handler(routeState);
 					}
 				};
-				this.beforeEachFuncs[0](from, to, next, '404');
+				this.beforeEachFuncs[0](from, to, next);
 			} else {
-				this.page404({ from, to });
+				route.handler(routeState);
 			}
+
+			if (this.afterEachFuncs.length) {
+				for (let j = 0; j < this.afterEachFuncs.length; j++) {
+					this.afterEachFuncs[j]();
+				}
+			}
+
+			return;
+		}
+
+		// 404 page
+		if (this.beforeEachFuncs.length) {
+			// beforeEach functions chain
+			let index = 0;
+			const next = () => {
+				// console.log(index);
+				if (index < lastIndex) {
+					this.beforeEachFuncs[++index](from, to, next, '404');
+				} else {
+					this.page404(routeState);
+				}
+			};
+			this.beforeEachFuncs[0](from, to, next, '404');
+		} else {
+			this.page404(routeState);
 		}
 	}
 
@@ -337,6 +365,9 @@ var handlers = {
 	},
 	notFound: function notFound() {
 		container.innerText = '404';
+	},
+	article: function article($route) {
+		container.innerHTML = '<pre style="font-size: 14px">' + JSON.stringify($route, null, '\t') + '</pre>';
 	}
 };
 var geerouter = new _GeeRouter2.default([{
@@ -346,6 +377,12 @@ var geerouter = new _GeeRouter2.default([{
 	path: '/post',
 	handler: handlers.post,
 	default: true
+}, {
+	path: '/article/:id/:title',
+	handler: handlers.article
+}, {
+	path: '/gallery/:id',
+	handler: handlers.article
 }, {
 	path: '*',
 	handler: handlers.notFound
