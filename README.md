@@ -26,7 +26,7 @@ Or you can just use `script` to import GeeRouter like this:
 
 Here is a codepen demo: https://codepen.io/gongpeione/pen/BRjMwV
 
-### Import and use GMD
+### Import and use GeeRouter
 ```html
 ...
 <nav>
@@ -35,16 +35,42 @@ Here is a codepen demo: https://codepen.io/gongpeione/pen/BRjMwV
         <li><a href="/post">Post</a></li>
         <li><a href="/aaaa">AAAA</a></li>
         <li><a href="/post">Post</a></li>
+        <li><a href="/article/111/Title">Article</a></li>
+        <li><a href="/gallery/222">Gallery</a></li>
     </ul>
 </nav>
 <div class="container"></div>
+<div class="mod">
+    <label for="history">History Mod</label>
+    <input type="checkbox" id="history">
+    <span></span>
+</div>
 
+<script>
+    var originalUrl = location.href;
+</script>
 <script src="bundle.js"></script>
+<script>
+    const history = document.querySelector('#history');
+    history.checked = localStorage.getItem('history') === 'true' || false;
+    history.addEventListener('change', function (e) {
+        if (this.checked) {
+        	localStorage.setItem('history', true);
+        } else {
+	        localStorage.setItem('history', false);
+        }
+        setTimeout(() => {
+	        location.href = originalUrl;
+        }, 400);
+    });
+</script>
 ...
 ```
 ```javascript
-import GeeRouter from 'gee-router';
+import GeeRouter from './GeeRouter';
+// import GeeRouter from 'gee-router';
 
+const historyMod = localStorage.getItem('history') === 'true' || false;
 const container = document.querySelector('.container');
 const handlers = {
 	home: () => {
@@ -56,6 +82,9 @@ const handlers = {
 	notFound: () => {
 		container.innerText = '404'
 	},
+	article: ($route) => {
+		container.innerHTML = `<pre style="font-size: 14px">${JSON.stringify($route, null, '\t')}</pre>`;
+	}
 }
 const geerouter = new GeeRouter([
 	{
@@ -68,10 +97,24 @@ const geerouter = new GeeRouter([
 		default: true
 	},
 	{
+		path: '/article/:id/:title',
+		handler: handlers.article,
+	},
+	{
+		path: '/gallery/:id',
+		handler: handlers.article,
+	},
+	{
 		path: '*',
 		handler: handlers.notFound
 	}
-]);
+], historyMod);
 geerouter.parse(document.querySelectorAll('a'));
 geerouter.start();
 ```
+
+## TODO
+
+- Nested Routes
+- Programmatic Navigation
+- Redirect
