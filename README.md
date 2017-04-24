@@ -1,6 +1,6 @@
 # GeeRouter - A simple front-end router
 
-[![](https://img.shields.io/badge/npm-1.0.4-blue.svg)](https://www.npmjs.com/package/gee-router)
+[![](https://img.shields.io/badge/npm-1.0.5-blue.svg)](https://www.npmjs.com/package/gee-router)
 
 ## Demo
 
@@ -40,6 +40,10 @@ Here is a codepen demo: https://codepen.io/gongpeione/pen/BRjMwV
     </ul>
 </nav>
 <div class="container"></div>
+<div class="control">
+    <div class="back"><</div>
+    <div class="forward">></div>
+</div>
 <div class="mod">
     <label for="history">History Mod</label>
     <input type="checkbox" id="history">
@@ -55,12 +59,12 @@ Here is a codepen demo: https://codepen.io/gongpeione/pen/BRjMwV
     history.checked = localStorage.getItem('history') === 'true' || false;
     history.addEventListener('change', function (e) {
         if (this.checked) {
-        	localStorage.setItem('history', true);
+            localStorage.setItem('history', true);
         } else {
-	        localStorage.setItem('history', false);
+            localStorage.setItem('history', false);
         }
         setTimeout(() => {
-	        location.href = originalUrl;
+            location.href = originalUrl;
         }, 400);
     });
 </script>
@@ -111,6 +115,14 @@ const geerouter = new GeeRouter([
 ], historyMod);
 geerouter.parse(document.querySelectorAll('a'));
 geerouter.start();
+
+document.querySelector('.back').addEventListener('click', e => {
+	geerouter.back();
+});
+
+document.querySelector('.forward').addEventListener('click', e => {
+	geerouter.forward();
+});
 ```
 
 ## TODO

@@ -1,6 +1,6 @@
 {
 	"name": "gee-router",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "this is a Front-End router that is easy to use.",
 	"main": "index.js",
 	"license": "MIT",
