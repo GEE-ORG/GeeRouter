@@ -42,3 +42,11 @@ const geerouter = new GeeRouter([
 ], historyMod);
 geerouter.parse(document.querySelectorAll('a'));
 geerouter.start();
+
+document.querySelector('.back').addEventListener('click', e => {
+	geerouter.back();
+});
+
+document.querySelector('.forward').addEventListener('click', e => {
+	geerouter.forward();
+});

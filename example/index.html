@@ -77,6 +77,30 @@
             border: 3px solid #fff;
             background: #1584ff;
         }
+        .control {
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%);
+            font-size: 0;
+        }
+        .control > div {
+            background: #1584ff;
+            padding: 10px 20px;
+            display: inline-block;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .control > div:hover {
+            background: #40a2ff;
+        }
+        .control > div:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+        .control > div:last-child {
+            border-radius: 0 5px 5px 0;
+        }
         /*input#history + span::after {*/
             /*content: '';*/
             /*position: absolute;*/
@@ -108,6 +132,10 @@
     </ul>
 </nav>
 <div class="container"></div>
+<div class="control">
+    <div class="back"><</div>
+    <div class="forward">></div>
+</div>
 <div class="mod">
     <label for="history">History Mod</label>
     <input type="checkbox" id="history">

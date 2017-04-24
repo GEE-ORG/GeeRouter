@@ -33,6 +33,8 @@ class GeeRouter {
 		// Current active route
 		this.curActive = null;
 
+		this.isControlling = false;
+
 		// find default route and wildcard route
 		this.routes.forEach(route => {
 			if (route.default) {
@@ -126,8 +128,12 @@ class GeeRouter {
 		this.to.path = this.pathName;
 		this.to.fullPath = `${this.origin}#!${this.pathName}`;
 
-		this.history.push(this.pathName);
-		this.historyAnchor += 1;
+		if (!this.isControlling) {
+			this.history.push(this.pathName);
+			this.historyAnchor = this.history.length - 1;
+		} else {
+			this.isControlling = false;
+		}
 
 		this.pathChange ({ from: this.from, to: this.to });
 
@@ -253,20 +259,34 @@ class GeeRouter {
 	}
 
 	back () {
-		if (this.history.length < 2) {
-			return;
-		}
-		this.pathName = this.history[this.historyAnchor - 1];
+		this.go(-1);
 	}
 
-	go (cout) {
-		if (cout > 0 && (this.history.length - 1 - this.historyAnchor) >= cout) {
-			this.pathName = this.history[this.historyAnchor - cout];
+	forward () {
+		this.go(1);
+	}
+
+	go (count) {
+		this.isControlling = true;
+		console.log(this.history);
+		count = ~~count;
+		if (count < 0 && this.historyAnchor === 0) {
+			return;
+		}
+		if (count > 0 && this.historyAnchor === this.history.length - 1) {
+			return;
 		}
 
-		if (cout < 0 && this.historyAnchor >= Math.abs(cout)) {
-			this.pathName = this.history[this.historyAnchor + cout];
+		let historyOffset = this.historyAnchor + count;
+		if (count > 0) {
+			historyOffset = historyOffset > (this.history.length - 1) ? this.history.length - 1 : historyOffset;
 		}
+		if (count < 0) {
+			historyOffset = historyOffset < 0 ? 0 : historyOffset;
+		}
+		this.historyAnchor = historyOffset;
+
+		window.location.hash = '!' + this.history[historyOffset];
 	}
 }
 
