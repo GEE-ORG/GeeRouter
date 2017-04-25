@@ -36,6 +36,11 @@ const geerouter = new GeeRouter([
 		handler: handlers.article,
 	},
 	{
+		path: '/redirect',
+		handler: () => {},
+		redirect: '/'
+	},
+	{
 		path: '*',
 		handler: handlers.notFound
 	}
@@ -50,3 +55,5 @@ document.querySelector('.back').addEventListener('click', e => {
 document.querySelector('.forward').addEventListener('click', e => {
 	geerouter.forward();
 });
+
+window.geerouter = geerouter;
