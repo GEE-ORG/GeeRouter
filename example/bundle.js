@@ -108,6 +108,8 @@ class GeeRouter {
 
 		this.isControlling = false;
 
+		this.redirectDelay = null;
+
 		// find default route and wildcard route
 		this.routes.forEach(route => {
 			if (route.default) {
@@ -251,7 +253,11 @@ class GeeRouter {
 				const split = query.split('=');
 				const key = split[0];
 				const value = split[1];
-				routeState.query[key] = value;
+				try {
+					routeState.query[key] = window.decodeURIComponent(value);
+				} catch (e) {
+					routeState.query[key] = value;
+				}
 			});
 		}
 
@@ -270,7 +276,11 @@ class GeeRouter {
 					isMatchRoute = true;
 					for (let i = 0; i < paramsMatches.length; i++) {
 						const param = paramsMatches[i].replace(':', '');
-						routeState.params[param] = pathMatches[i + 1];
+						try {
+							routeState.params[param] = window.decodeURIComponent(pathMatches[i + 1]);
+						} catch (e) {
+							routeState.params[param] = pathMatches[i + 1];
+						}
 					}
 				}
 			}
@@ -302,8 +312,13 @@ class GeeRouter {
 				}
 			}
 
+			this.redirectDelay && clearTimeout(this.redirectDelay);
 			if (route.redirect) {
-				this._updatePath(route.redirect);
+				// Give u a little time to go back
+				this.redirectDelay = setTimeout(() => {
+					this._updatePath(route.redirect);
+					this.redirectDelay = null;
+				}, 200);
 			}
 
 			return;
