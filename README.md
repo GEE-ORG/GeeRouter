@@ -127,6 +127,6 @@ document.querySelector('.forward').addEventListener('click', e => {
 
 ## TODO
 
-- Nested Routes
-- Programmatic Navigation
-- Redirect
+- [ ] Nested Routes
+- [x] Programmatic Navigation
+- [x] Redirect
