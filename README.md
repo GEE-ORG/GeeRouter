@@ -1,3 +1,5 @@
+![GeeRouter](https://gongpeione.github.io/GeeRouter/example/logo.svg)
+
 # GeeRouter - A simple front-end router
 
 [![](https://img.shields.io/badge/npm-1.0.6-blue.svg)](https://www.npmjs.com/package/gee-router)
