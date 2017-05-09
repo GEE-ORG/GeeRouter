@@ -1,8 +1,8 @@
 {
 	"name": "gee-router",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "this is a Front-End router that is easy to use.",
-	"main": "index.js",
+	"main": "lib/GeeRouter.js",
 	"license": "MIT",
 	"author": "Geeku <ggongpei@gmail.com> (https://geeku.net/)",
 	"repository": {

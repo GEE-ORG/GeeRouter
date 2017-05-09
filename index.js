@@ -1,2 +1,2 @@
-const GeeRouter = require('./lib/GeeRouter');
+const GeeRouter = require('./src/GeeRouter');
 module.exports = GeeRouter;

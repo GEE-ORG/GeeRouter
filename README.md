@@ -2,7 +2,7 @@
 
 # GeeRouter - A simple front-end router
 
-[![](https://img.shields.io/badge/npm-1.0.6-blue.svg)](https://www.npmjs.com/package/gee-router)
+[![](https://img.shields.io/badge/npm-1.0.7-blue.svg)](https://www.npmjs.com/package/gee-router)
 
 ## Demo
 
